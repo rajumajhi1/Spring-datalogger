@@ -10,6 +10,7 @@ package com.datalogger.faults.serv;
 import com.datalogger.faults.dto.FaultDTO;
 import com.datalogger.faults.repo.FaultRepository;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -58,6 +59,11 @@ public class FaultService {
             Integer sysYear = record[5] instanceof java.math.BigDecimal ? ((java.math.BigDecimal)record[5]).intValue() : (Integer)record[5];
             Integer dlTime = record[6] instanceof java.math.BigDecimal ? ((java.math.BigDecimal)record[6]).intValue() : (Integer)record[6];
             
+            // Convert Timestamp to LocalDateTime
+            LocalDateTime createdTime = record[9] != null ? ((Timestamp)record[9]).toLocalDateTime() : null;
+            LocalDateTime sysTimestamp = record[10] != null ? ((Timestamp)record[10]).toLocalDateTime() : null;
+            LocalDateTime dlTimestamp = record[11] != null ? ((Timestamp)record[11]).toLocalDateTime() : null;
+            
             return new FaultDTO(
                 (String)record[0], 
                 (String)record[1], 
@@ -68,7 +74,9 @@ public class FaultService {
                 dlTime, 
                 (String)record[7], 
                 (String)record[8], 
-                (Timestamp)record[9]
+                createdTime,
+                sysTimestamp,
+                dlTimestamp
             );
         }).collect(Collectors.toList());
     }

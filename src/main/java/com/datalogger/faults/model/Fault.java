@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import lombok.Generated;
 
 @Entity
@@ -70,9 +70,9 @@ public class Fault {
     private Integer category;
     @Column(name="CLASSIFICATION")
     private Integer classification;
-    @JsonFormat(pattern="yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
     @Column(name="CREATEDTIME")
-    private Timestamp createdTime;
+    private LocalDateTime createdTime;
     @Column(name="FLTREASON")
     private String fltReason;
     @Column(name="REMARKS")
@@ -91,7 +91,7 @@ public class Fault {
     public Fault() {
     }
 
-    public Fault(Integer dlNo, Integer faultNo, String fltMsg, String fltInfo, String rPersonId, String cPersonId, Integer sysTime, Integer sysYear, Integer dlTime, Integer dlYear, Integer noticedTime, Integer noticedYear, Integer cleared, Integer clearedYear, String faultLevel, String faultType, String faultPseudoType, String cktFileName, String cktStatFileName, String linkMessage, String faultStatus, String dept, Integer category, Integer classification, Timestamp createdTime, String fltReason, String remarks, Integer clientId, String eFltInfo, String trainNo, String asmName, String reasonDelayOrNotSet) {
+    public Fault(Integer dlNo, Integer faultNo, String fltMsg, String fltInfo, String rPersonId, String cPersonId, Integer sysTime, Integer sysYear, Integer dlTime, Integer dlYear, Integer noticedTime, Integer noticedYear, Integer cleared, Integer clearedYear, String faultLevel, String faultType, String faultPseudoType, String cktFileName, String cktStatFileName, String linkMessage, String faultStatus, String dept, Integer category, Integer classification, LocalDateTime createdTime, String fltReason, String remarks, Integer clientId, String eFltInfo, String trainNo, String asmName, String reasonDelayOrNotSet) {
         this.dlNo = dlNo;
         this.faultNo = faultNo;
         this.fltMsg = fltMsg;
@@ -321,11 +321,11 @@ public class Fault {
         this.classification = classification;
     }
 
-    public Timestamp getCreatedTime() {
+    public LocalDateTime getCreatedTime() {
         return this.createdTime;
     }
 
-    public void setCreatedTime(Timestamp createdTime) {
+    public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
     }
 
@@ -526,9 +526,9 @@ public class Fault {
         if (this$dept == null ? other$dept != null : !this$dept.equals(other$dept)) {
             return false;
         }
-        Timestamp this$createdTime = this.getCreatedTime();
-        Timestamp other$createdTime = other.getCreatedTime();
-        if (this$createdTime == null ? other$createdTime != null : !((Object)this$createdTime).equals(other$createdTime)) {
+        LocalDateTime this$createdTime = this.getCreatedTime();
+        LocalDateTime other$createdTime = other.getCreatedTime();
+        if (this$createdTime == null ? other$createdTime != null : !this$createdTime.equals(other$createdTime)) {
             return false;
         }
         String this$fltReason = this.getFltReason();
@@ -620,8 +620,8 @@ public class Fault {
         result = result * 59 + ($faultStatus == null ? 43 : $faultStatus.hashCode());
         String $dept = this.getDept();
         result = result * 59 + ($dept == null ? 43 : $dept.hashCode());
-        Timestamp $createdTime = this.getCreatedTime();
-        result = result * 59 + ($createdTime == null ? 43 : ((Object)$createdTime).hashCode());
+        LocalDateTime $createdTime = this.getCreatedTime();
+        result = result * 59 + ($createdTime == null ? 43 : $createdTime.hashCode());
         String $fltReason = this.getFltReason();
         result = result * 59 + ($fltReason == null ? 43 : $fltReason.hashCode());
         String $remarks = this.getRemarks();

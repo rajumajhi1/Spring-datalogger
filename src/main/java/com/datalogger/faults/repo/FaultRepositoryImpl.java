@@ -49,7 +49,19 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> allFaults() {
-        String sql = "SELECT r.dlStation, r.dlName, f.fltMsg, f.fltInfo, f.sysTime, f.sysYear, f.dlTime, f.faultLevel, f.faultType, f.createdTime " +
+        String sql = "SELECT " +
+                     "r.dlStation, " +
+                     "r.dlName, " +
+                     "f.fltMsg, " +
+                     "f.fltInfo, " +
+                     "f.sysTime, " +
+                     "f.sysYear, " +
+                     "f.dlTime, " +
+                     "f.faultLevel, " +
+                     "f.faultType, " +
+                     "f.createdTime, " +
+                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH') " +
                      "ORDER BY f.sysTime DESC";
@@ -67,7 +79,19 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findNewFaultsSince(Timestamp lastCreatedTime) {
-        String sql = "SELECT r.dlStation, r.dlName, f.fltMsg, f.fltInfo, f.sysTime, f.sysYear, f.dlTime, f.faultLevel, f.faultType, f.createdTime " +
+        String sql = "SELECT " +
+                     "r.dlStation, " +
+                     "r.dlName, " +
+                     "f.fltMsg, " +
+                     "f.fltInfo, " +
+                     "f.sysTime, " +
+                     "f.sysYear, " +
+                     "f.dlTime, " +
+                     "f.faultLevel, " +
+                     "f.faultType, " +
+                     "f.createdTime, " +
+                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE f.createdTime > :lastCreatedTime " +
                      "ORDER BY f.createdTime DESC FETCH FIRST 100 ROWS ONLY";
@@ -86,7 +110,19 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findByDlTime(long id) {
-        String sql = "SELECT r.dlStation, r.dlName, f.fltMsg, f.fltInfo, f.sysTime, f.sysYear, f.dlTime, f.faultLevel, f.faultType, f.createdTime " +
+        String sql = "SELECT " +
+                     "r.dlStation, " +
+                     "r.dlName, " +
+                     "f.fltMsg, " +
+                     "f.fltInfo, " +
+                     "f.sysTime, " +
+                     "f.sysYear, " +
+                     "f.dlTime, " +
+                     "f.faultLevel, " +
+                     "f.faultType, " +
+                     "f.createdTime, " +
+                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE f.dlTime = :id";
         
@@ -104,7 +140,19 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findRelayRoomDoorEvents() {
-        String sql = "SELECT r.dlStation, r.dlName, f.fltMsg, f.fltInfo, f.sysTime, f.sysYear, f.dlTime, f.faultLevel, f.faultType, f.createdTime " +
+        String sql = "SELECT " +
+                     "r.dlStation, " +
+                     "r.dlName, " +
+                     "f.fltMsg, " +
+                     "f.fltInfo, " +
+                     "f.sysTime, " +
+                     "f.sysYear, " +
+                     "f.dlTime, " +
+                     "f.faultLevel, " +
+                     "f.faultType, " +
+                     "f.createdTime, " +
+                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE TRIM(f.faultType) IN ('Relay Room Door Opened', 'Relay Room Door Closed') " +
                      "AND f.createdTime >= TRUNC(SYSDATE) AND f.createdTime < TRUNC(SYSDATE) + INTERVAL '1' DAY " +
@@ -123,7 +171,19 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findYesterdayRelayRoomDoorEvents() {
-        String sql = "SELECT r.dlStation, r.dlName, f.fltMsg, f.fltInfo, f.sysTime, f.sysYear, f.dlTime, f.faultLevel, f.faultType, f.createdTime " +
+        String sql = "SELECT " +
+                     "r.dlStation, " +
+                     "r.dlName, " +
+                     "f.fltMsg, " +
+                     "f.fltInfo, " +
+                     "f.sysTime, " +
+                     "f.sysYear, " +
+                     "f.dlTime, " +
+                     "f.faultLevel, " +
+                     "f.faultType, " +
+                     "f.createdTime, " +
+                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE TRIM(f.faultType) IN ('Relay Room Door Opened', 'Relay Room Door Closed') " +
                      "AND f.createdTime >= TRUNC(SYSDATE - INTERVAL '1' DAY) AND f.createdTime < TRUNC(SYSDATE) " +
@@ -142,7 +202,19 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findAllRelayRoomDoorEvents() {
-        String sql = "SELECT r.dlStation, r.dlName, f.fltMsg, f.fltInfo, f.sysTime, f.sysYear, f.dlTime, f.faultLevel, f.faultType, f.createdTime " +
+        String sql = "SELECT " +
+                     "r.dlStation, " +
+                     "r.dlName, " +
+                     "f.fltMsg, " +
+                     "f.fltInfo, " +
+                     "f.sysTime, " +
+                     "f.sysYear, " +
+                     "f.dlTime, " +
+                     "f.faultLevel, " +
+                     "f.faultType, " +
+                     "f.createdTime, " +
+                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE TRIM(f.faultType) IN ('Relay Room Door Opened', 'Relay Room Door Closed') " +
                      "ORDER BY f.createdTime DESC";
@@ -160,7 +232,19 @@ public class FaultRepositoryImpl implements FaultRepository {
     
     @Override
     public List<Object[]> findTodaysFaults() {
-        String sql = "SELECT r.dlStation, r.dlName, f.fltMsg, f.fltInfo, f.sysTime, f.sysYear, f.dlTime, f.faultLevel, f.faultType, f.createdTime " +
+        String sql = "SELECT " +
+                     "r.dlStation, " +
+                     "r.dlName, " +
+                     "f.fltMsg, " +
+                     "f.fltInfo, " +
+                     "f.sysTime, " +
+                     "f.sysYear, " +
+                     "f.dlTime, " +
+                     "f.faultLevel, " +
+                     "f.faultType, " +
+                     "f.createdTime, " +
+                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE f.createdTime >= TRUNC(SYSDATE) AND f.createdTime < TRUNC(SYSDATE) + INTERVAL '1' DAY " +
                      "ORDER BY f.createdTime DESC";
@@ -178,7 +262,19 @@ public class FaultRepositoryImpl implements FaultRepository {
     
     @Override
     public List<Object[]> findYesterdaysFaults() {
-        String sql = "SELECT r.dlStation, r.dlName, f.fltMsg, f.fltInfo, f.sysTime, f.sysYear, f.dlTime, f.faultLevel, f.faultType, f.createdTime " +
+        String sql = "SELECT " +
+                     "r.dlStation, " +
+                     "r.dlName, " +
+                     "f.fltMsg, " +
+                     "f.fltInfo, " +
+                     "f.sysTime, " +
+                     "f.sysYear, " +
+                     "f.dlTime, " +
+                     "f.faultLevel, " +
+                     "f.faultType, " +
+                     "f.createdTime, " +
+                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE f.createdTime >= TRUNC(SYSDATE - INTERVAL '1' DAY) AND f.createdTime < TRUNC(SYSDATE) " +
                      "ORDER BY f.createdTime DESC";
@@ -196,11 +292,23 @@ public class FaultRepositoryImpl implements FaultRepository {
     
     @Override
     public List<Object[]> findLast15MinutesFaults() {
-        String sql = "SELECT r.dlStation, r.dlName, f.fltMsg, f.fltInfo, f.sysTime, f.sysYear, f.dlTime, f.faultLevel, f.faultType, f.createdTime " +
-                     "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.createdTime >= SYSDATE - INTERVAL '15' MINUTE " +
-                     "ORDER BY f.createdTime DESC";
-        
+    String sql = "SELECT " +
+                 "r.dlStation, " +
+                 "r.dlName, " +
+                 "f.fltMsg, " +
+                 "f.fltInfo, " +
+                 "f.sysTime, " +
+                 "f.sysYear, " +
+                 "f.dlTime, " +
+                 "f.faultLevel, " +
+                 "f.faultType, " +
+                 "f.createdTime, " +
+                 "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                 "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
+                 "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
+                 "WHERE f.dlTime >= (((SYSDATE - INTERVAL '15' MINUTE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
+                 "AND f.dlTime <= (((SYSDATE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
+                 "ORDER BY f.dlTime DESC";
         EntityManager em = getEntityManager();
         try {
             Query query = em.createNativeQuery(sql);
@@ -214,24 +322,21 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findLast15MinutesFaultsByDlTime() {
-        // Frontend conversion logic:
-        // epoch = new Date('2025-01-01T00:00:00Z').getTime() = 1735689600000 ms
-        // dlTime to date: totalMilliseconds = (dlTime / 64) * 1000, actualDate = new Date(epoch + totalMilliseconds)
-        // Date to dlTime: dlTime = ((currentTimeMs - epoch) / 1000) * 64
-        
-        // To get last 15 minutes data:
-        // 1. Convert current time to dlTime format
-        // 2. Convert (current time - 15 minutes) to dlTime format  
-        // 3. Filter data between these two dlTime values
-        
-        // Oracle SQL calculation:
-        // Current dlTime = ((SYSDATE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000 * 64
-        // 15 minutes ago dlTime = ((SYSDATE - INTERVAL '15' MINUTE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000 * 64
-        
-        String sql = "SELECT r.dlStation, r.dlName, f.fltMsg, f.fltInfo, f.sysTime, f.sysYear, f.dlTime, f.faultLevel, f.faultType, f.createdTime " +
+        String sql = "SELECT " +
+                     "r.dlStation, " +
+                     "r.dlName, " +
+                     "f.fltMsg, " +
+                     "f.fltInfo, " +
+                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "f.sysYear, " +
+                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP, " +
+                     "f.faultLevel, " +
+                     "f.faultType, " +
+                     "f.createdTime " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.dlTime >= (((SYSDATE - INTERVAL '15' MINUTE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
+                     "WHERE f.dlTime >= (((SYSDATE - INTERVAL '240' MINUTE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
                      "AND f.dlTime <= (((SYSDATE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
+                     "AND f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH', 'TEMPERATURE HIGH','Earth Leakage Appeared','Earth Leakage Disappeared') " +
                      "ORDER BY f.dlTime DESC";
         
         EntityManager em = getEntityManager();

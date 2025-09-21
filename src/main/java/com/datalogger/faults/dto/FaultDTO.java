@@ -12,9 +12,7 @@ package com.datalogger.faults.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.Temporal;
-import jakarta.persistence.TemporalType;
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import lombok.Generated;
 
 public class FaultDTO {
@@ -32,7 +30,6 @@ public class FaultDTO {
     @JsonProperty(value="sysYear")
     private Integer sysYear;
     @JsonProperty(value="dlTime")
-    @Temporal(value=TemporalType.TIMESTAMP)
     private Integer dlTime;
     @JsonProperty(value="faultLevel")
     private String faultLevel;
@@ -40,9 +37,15 @@ public class FaultDTO {
     private String faultType;
     @JsonProperty(value="createdTime")
     @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-    private Timestamp createdTime;
+    private LocalDateTime createdTime;
+    @JsonProperty(value="sysTimestamp")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime sysTimestamp;
+    @JsonProperty(value="dlTimestamp")
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
+    private LocalDateTime dlTimestamp;
 
-    public FaultDTO(String dlStation, String dlName, String fltMsg, String fltInfo, int sysTime, Integer sysYear, Integer dlTime, String faultLevel, String faultType, Timestamp createdTime) {
+    public FaultDTO(String dlStation, String dlName, String fltMsg, String fltInfo, int sysTime, Integer sysYear, Integer dlTime, String faultLevel, String faultType, LocalDateTime createdTime, LocalDateTime sysTimestamp, LocalDateTime dlTimestamp) {
         this.dlStation = dlStation;
         this.dlName = dlName;
         this.fltMsg = fltMsg;
@@ -53,9 +56,11 @@ public class FaultDTO {
         this.faultLevel = faultLevel;
         this.faultType = faultType;
         this.createdTime = createdTime;
+        this.sysTimestamp = sysTimestamp;
+        this.dlTimestamp = dlTimestamp;
     }
 
-    public FaultDTO(String dlStation, String dlName, String fltMsg, Integer sysTime, String fltInfo, Integer sysYear, Integer dlTime, String faultLevel, String faultType, Timestamp createdTime) {
+    public FaultDTO(String dlStation, String dlName, String fltMsg, Integer sysTime, String fltInfo, Integer sysYear, Integer dlTime, String faultLevel, String faultType, LocalDateTime createdTime, LocalDateTime sysTimestamp, LocalDateTime dlTimestamp) {
         this.dlStation = dlStation;
         this.dlName = dlName;
         this.fltMsg = fltMsg;
@@ -66,6 +71,8 @@ public class FaultDTO {
         this.faultLevel = faultLevel;
         this.faultType = faultType;
         this.createdTime = createdTime;
+        this.sysTimestamp = sysTimestamp;
+        this.dlTimestamp = dlTimestamp;
     }
 
     public FaultDTO() {
@@ -143,12 +150,28 @@ public class FaultDTO {
         this.faultType = faultType;
     }
 
-    public Timestamp getCreatedTime() {
+    public LocalDateTime getCreatedTime() {
         return this.createdTime;
     }
 
-    public void setCreatedTime(Timestamp createdTime) {
+    public void setCreatedTime(LocalDateTime createdTime) {
         this.createdTime = createdTime;
+    }
+
+    public LocalDateTime getSysTimestamp() {
+        return this.sysTimestamp;
+    }
+
+    public void setSysTimestamp(LocalDateTime sysTimestamp) {
+        this.sysTimestamp = sysTimestamp;
+    }
+
+    public LocalDateTime getDlTimestamp() {
+        return this.dlTimestamp;
+    }
+
+    public void setDlTimestamp(LocalDateTime dlTimestamp) {
+        this.dlTimestamp = dlTimestamp;
     }
 
     public String toString() {
@@ -212,9 +235,9 @@ public class FaultDTO {
         if (this$faultType == null ? other$faultType != null : !this$faultType.equals(other$faultType)) {
             return false;
         }
-        Timestamp this$createdTime = this.getCreatedTime();
-        Timestamp other$createdTime = other.getCreatedTime();
-        return !(this$createdTime == null ? other$createdTime != null : !((Object)this$createdTime).equals(other$createdTime));
+        LocalDateTime this$createdTime = this.getCreatedTime();
+        LocalDateTime other$createdTime = other.getCreatedTime();
+        return !(this$createdTime == null ? other$createdTime != null : !this$createdTime.equals(other$createdTime));
     }
 
     @Generated
@@ -244,8 +267,8 @@ public class FaultDTO {
         result = result * 59 + ($faultLevel == null ? 43 : $faultLevel.hashCode());
         String $faultType = this.getFaultType();
         result = result * 59 + ($faultType == null ? 43 : $faultType.hashCode());
-        Timestamp $createdTime = this.getCreatedTime();
-        result = result * 59 + ($createdTime == null ? 43 : ((Object)$createdTime).hashCode());
+        LocalDateTime $createdTime = this.getCreatedTime();
+        result = result * 59 + ($createdTime == null ? 43 : $createdTime.hashCode());
         return result;
     }
 }
