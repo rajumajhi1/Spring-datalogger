@@ -8,39 +8,46 @@
 package com.datalogger.faults.serv;
 
 import com.datalogger.faults.dto.FaultDTO;
-import com.datalogger.faults.repo.Repository1;
-import com.datalogger.faults.repo2.Repository2;
+import com.datalogger.faults.repo.FaultRepository;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 @Service
 public class FaultService {
     @Autowired
-    private Repository1 repo;
-    @Autowired
-    private Repository2 repo2;
+    private ApplicationContext context;
+    
+    private Map<String, FaultRepository> getRepositories() {
+        return context.getBean("faultRepositories", Map.class);
+    }
 
     public List<FaultDTO> getAllFaults() {
-        List<Object[]> resultsFromRepo1 = this.repo.allFaults();
-        List<Object[]> resultsFromRepo2 = this.repo2.allFaults();
-        List<FaultDTO> faultsFromRepo1 = this.mapToDTO(resultsFromRepo1);
-        List<FaultDTO> faultsFromRepo2 = this.mapToDTO(resultsFromRepo2);
-        ArrayList<FaultDTO> combinedFaults = new ArrayList<FaultDTO>();
-        combinedFaults.addAll(faultsFromRepo1);
-        combinedFaults.addAll(faultsFromRepo2);
+        ArrayList<FaultDTO> combinedFaults = new ArrayList<>();
+        
+        for (FaultRepository repository : getRepositories().values()) {
+            List<Object[]> results = repository.allFaults();
+            List<FaultDTO> faults = mapToDTO(results);
+            combinedFaults.addAll(faults);
+        }
+        
         return combinedFaults;
     }
 
     public List<FaultDTO> getNewFaultsSince(Timestamp lastCreatedTime) {
-        List<Object[]> resultsFromRepo1 = this.repo.findNewFaultsSince(lastCreatedTime);
-        List<Object[]> resultsFromRepo2 = this.repo2.findNewFaultsSince(lastCreatedTime);
-        ArrayList<FaultDTO> newFaults = new ArrayList<FaultDTO>();
-        newFaults.addAll(this.mapToDTO(resultsFromRepo1));
-        newFaults.addAll(this.mapToDTO(resultsFromRepo2));
+        ArrayList<FaultDTO> newFaults = new ArrayList<>();
+        
+        for (FaultRepository repository : getRepositories().values()) {
+            List<Object[]> results = repository.findNewFaultsSince(lastCreatedTime);
+            List<FaultDTO> faults = mapToDTO(results);
+            newFaults.addAll(faults);
+        }
+        
         return newFaults;
     }
 
@@ -67,13 +74,98 @@ public class FaultService {
     }
 
     public List<FaultDTO> getFaultById(long id) {
-        List<Object[]> getFaultById1 = this.repo2.findByDlTime(id);
-        List<Object[]> getFaultById2 = this.repo.findByDlTime(id);
-        List<FaultDTO> faultsFromRepo1 = this.mapToDTO(getFaultById1);
-        List<FaultDTO> faultsFromRepo2 = this.mapToDTO(getFaultById2);
-        ArrayList<FaultDTO> combinedFaults = new ArrayList<FaultDTO>();
-        combinedFaults.addAll(faultsFromRepo1);
-        combinedFaults.addAll(faultsFromRepo2);
+        ArrayList<FaultDTO> combinedFaults = new ArrayList<>();
+        
+        for (FaultRepository repository : getRepositories().values()) {
+            List<Object[]> results = repository.findByDlTime(id);
+            List<FaultDTO> faults = mapToDTO(results);
+            combinedFaults.addAll(faults);
+        }
+        
+        return combinedFaults;
+    }
+    
+    public List<FaultDTO> getRelayRoomDoorEvents() {
+        ArrayList<FaultDTO> combinedFaults = new ArrayList<>();
+        
+        for (FaultRepository repository : getRepositories().values()) {
+            List<Object[]> results = repository.findRelayRoomDoorEvents();
+            List<FaultDTO> faults = mapToDTO(results);
+            combinedFaults.addAll(faults);
+        }
+        
+        return combinedFaults;
+    }
+    
+    public List<FaultDTO> getAllRelayRoomDoorEvents() {
+        ArrayList<FaultDTO> combinedFaults = new ArrayList<>();
+        
+        for (FaultRepository repository : getRepositories().values()) {
+            List<Object[]> results = repository.findAllRelayRoomDoorEvents();
+            List<FaultDTO> faults = mapToDTO(results);
+            combinedFaults.addAll(faults);
+        }
+        
+        return combinedFaults;
+    }
+    
+    public List<FaultDTO> getYesterdayRelayRoomDoorEvents() {
+        ArrayList<FaultDTO> combinedFaults = new ArrayList<>();
+        
+        for (FaultRepository repository : getRepositories().values()) {
+            List<Object[]> results = repository.findYesterdayRelayRoomDoorEvents();
+            List<FaultDTO> faults = mapToDTO(results);
+            combinedFaults.addAll(faults);
+        }
+        
+        return combinedFaults;
+    }
+    
+    public List<FaultDTO> getTodaysFaults() {
+        ArrayList<FaultDTO> combinedFaults = new ArrayList<>();
+        
+        for (FaultRepository repository : getRepositories().values()) {
+            List<Object[]> results = repository.findTodaysFaults();
+            List<FaultDTO> faults = mapToDTO(results);
+            combinedFaults.addAll(faults);
+        }
+        
+        return combinedFaults;
+    }
+    
+    public List<FaultDTO> getYesterdaysFaults() {
+        ArrayList<FaultDTO> combinedFaults = new ArrayList<>();
+        
+        for (FaultRepository repository : getRepositories().values()) {
+            List<Object[]> results = repository.findYesterdaysFaults();
+            List<FaultDTO> faults = mapToDTO(results);
+            combinedFaults.addAll(faults);
+        }
+        
+        return combinedFaults;
+    }
+    
+    public List<FaultDTO> getLast15MinutesFaults() {
+        ArrayList<FaultDTO> combinedFaults = new ArrayList<>();
+        
+        for (FaultRepository repository : getRepositories().values()) {
+            List<Object[]> results = repository.findLast15MinutesFaults();
+            List<FaultDTO> faults = mapToDTO(results);
+            combinedFaults.addAll(faults);
+        }
+        
+        return combinedFaults;
+    }
+
+    public List<FaultDTO> getLast15MinutesFaultsByDlTime() {
+        ArrayList<FaultDTO> combinedFaults = new ArrayList<>();
+        
+        for (FaultRepository repository : getRepositories().values()) {
+            List<Object[]> results = repository.findLast15MinutesFaultsByDlTime();
+            List<FaultDTO> faults = mapToDTO(results);
+            combinedFaults.addAll(faults);
+        }
+        
         return combinedFaults;
     }
 }
