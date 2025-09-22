@@ -48,14 +48,15 @@ public class DynamicDataSourceConfig {
             String connectionTimeout = environment.getProperty("spring.datasource.user[" + i + "].connection-timeout");
             String socketTimeout = environment.getProperty("spring.datasource.user[" + i + "].socket-timeout");
             
-            // Apply HikariCP settings
-            config.setConnectionTimeout(Long.parseLong(connectionTimeout != null ? connectionTimeout : "60000"));
+            // Apply HikariCP settings - increased pool sizes to handle multiple concurrent requests
+            config.setConnectionTimeout(Long.parseLong(connectionTimeout != null ? connectionTimeout : "30000"));
             config.setValidationTimeout(5000);
-            config.setMinimumIdle(2);
-            config.setMaximumPoolSize(5);
+            config.setMinimumIdle(5);
+            config.setMaximumPoolSize(15);
             config.setIdleTimeout(300000);
             config.setMaxLifetime(1800000);
             config.setConnectionTestQuery("SELECT 1 FROM DUAL");
+            config.setLeakDetectionThreshold(60000); // 60 seconds leak detection
             
             // Add Oracle-specific properties
             if (socketTimeout != null) {

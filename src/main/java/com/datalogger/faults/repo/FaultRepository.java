@@ -2,6 +2,7 @@ package com.datalogger.faults.repo;
 
 import com.datalogger.faults.model.Fault;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface FaultRepository {
@@ -15,4 +16,5 @@ public interface FaultRepository {
     List<Object[]> findYesterdaysFaults();
     List<Object[]> findLast15MinutesFaults();
     List<Object[]> findLast15MinutesFaultsByDlTime();
+    List<Object[]> findFaultsByDateRange(LocalDateTime fromDateTime, LocalDateTime toDateTime);
 }

@@ -13,6 +13,7 @@
 package com.datalogger.faults.controll;
 
 import com.datalogger.faults.dto.FaultDTO;
+import com.datalogger.faults.dto.FaultDateRangeDTO;
 import com.datalogger.faults.serv.FaultService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -81,5 +84,14 @@ public class FaultController {
     public ResponseEntity<List<FaultDTO>> getLast15MinutesFaultsByDlTime() {
         List<FaultDTO> last15MinutesFaults = this.faultService.getLast15MinutesFaultsByDlTime();
         return ResponseEntity.ok(last15MinutesFaults);
+    }
+
+    @PostMapping(value={"/faults-by-date-range"})
+    public ResponseEntity<List<FaultDTO>> getFaultsByDateRange(@RequestBody FaultDateRangeDTO dateRangeDTO) {
+        List<FaultDTO> faultsByDateRange = this.faultService.getFaultsByDateRange(
+            dateRangeDTO.getFromDateTime(), 
+            dateRangeDTO.getToDateTime()
+        );
+        return ResponseEntity.ok(faultsByDateRange);
     }
 }

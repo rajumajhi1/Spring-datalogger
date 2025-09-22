@@ -9,6 +9,8 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Query;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Map;
 
@@ -49,7 +51,11 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> allFaults() {
-        String sql = "SELECT " +
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            
+            String sql = "SELECT " +
                      "r.dlStation, " +
                      "r.dlName, " +
                      "f.fltMsg, " +
@@ -65,9 +71,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH') " +
                      "ORDER BY f.sysTime DESC";
-        
-        EntityManager em = getEntityManager();
-        try {
+            
             Query query = em.createNativeQuery(sql);
             return query.getResultList();
         } finally {
@@ -79,7 +83,11 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findNewFaultsSince(Timestamp lastCreatedTime) {
-        String sql = "SELECT " +
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            
+            String sql = "SELECT " +
                      "r.dlStation, " +
                      "r.dlName, " +
                      "f.fltMsg, " +
@@ -95,9 +103,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE f.createdTime > :lastCreatedTime " +
                      "ORDER BY f.createdTime DESC FETCH FIRST 100 ROWS ONLY";
-        
-        EntityManager em = getEntityManager();
-        try {
+            
             Query query = em.createNativeQuery(sql);
             query.setParameter("lastCreatedTime", lastCreatedTime);
             return query.getResultList();
@@ -110,7 +116,11 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findByDlTime(long id) {
-        String sql = "SELECT " +
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            
+            String sql = "SELECT " +
                      "r.dlStation, " +
                      "r.dlName, " +
                      "f.fltMsg, " +
@@ -125,9 +135,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE f.dlTime = :id";
-        
-        EntityManager em = getEntityManager();
-        try {
+            
             Query query = em.createNativeQuery(sql);
             query.setParameter("id", id);
             return query.getResultList();
@@ -140,7 +148,11 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findRelayRoomDoorEvents() {
-        String sql = "SELECT " +
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            
+            String sql = "SELECT " +
                      "r.dlStation, " +
                      "r.dlName, " +
                      "f.fltMsg, " +
@@ -157,9 +169,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "WHERE TRIM(f.faultType) IN ('Relay Room Door Opened', 'Relay Room Door Closed') " +
                      "AND f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) + INTERVAL '1' DAY " +
                      "ORDER BY f.createdTime DESC";
-        
-        EntityManager em = getEntityManager();
-        try {
+            
             Query query = em.createNativeQuery(sql);
             return query.getResultList();
         } finally {
@@ -171,7 +181,11 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findYesterdayRelayRoomDoorEvents() {
-        String sql = "SELECT " +
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            
+            String sql = "SELECT " +
                      "r.dlStation, " +
                      "r.dlName, " +
                      "f.fltMsg, " +
@@ -186,11 +200,10 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE TRIM(f.faultType) IN ('Relay Room Door Opened', 'Relay Room Door Closed') " +
-                     "AND f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '1' DAY) AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) " +
+                     "AND f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) - INTERVAL '1' DAY " +
+                     "AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) " +
                      "ORDER BY f.createdTime DESC";
-        
-        EntityManager em = getEntityManager();
-        try {
+            
             Query query = em.createNativeQuery(sql);
             return query.getResultList();
         } finally {
@@ -202,7 +215,11 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findAllRelayRoomDoorEvents() {
-        String sql = "SELECT " +
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            
+            String sql = "SELECT " +
                      "r.dlStation, " +
                      "r.dlName, " +
                      "f.fltMsg, " +
@@ -218,9 +235,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE TRIM(f.faultType) IN ('Relay Room Door Opened', 'Relay Room Door Closed') " +
                      "ORDER BY f.createdTime DESC";
-        
-        EntityManager em = getEntityManager();
-        try {
+            
             Query query = em.createNativeQuery(sql);
             return query.getResultList();
         } finally {
@@ -229,10 +244,14 @@ public class FaultRepositoryImpl implements FaultRepository {
             }
         }
     }
-    
+
     @Override
     public List<Object[]> findTodaysFaults() {
-        String sql = "SELECT " +
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            
+            String sql = "SELECT " +
                      "r.dlStation, " +
                      "r.dlName, " +
                      "f.fltMsg, " +
@@ -246,11 +265,10 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) + INTERVAL '1' DAY " +
+                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH') " +
+                     "AND f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) + INTERVAL '1' DAY " +
                      "ORDER BY f.createdTime DESC";
-        
-        EntityManager em = getEntityManager();
-        try {
+            
             Query query = em.createNativeQuery(sql);
             return query.getResultList();
         } finally {
@@ -259,10 +277,14 @@ public class FaultRepositoryImpl implements FaultRepository {
             }
         }
     }
-    
+
     @Override
     public List<Object[]> findYesterdaysFaults() {
-        String sql = "SELECT " +
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            
+            String sql = "SELECT " +
                      "r.dlStation, " +
                      "r.dlName, " +
                      "f.fltMsg, " +
@@ -276,11 +298,11 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '1' DAY) AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) " +
+                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH') " +
+                     "AND f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) - INTERVAL '1' DAY " +
+                     "AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) " +
                      "ORDER BY f.createdTime DESC";
-        
-        EntityManager em = getEntityManager();
-        try {
+            
             Query query = em.createNativeQuery(sql);
             return query.getResultList();
         } finally {
@@ -289,28 +311,31 @@ public class FaultRepositoryImpl implements FaultRepository {
             }
         }
     }
-    
+
     @Override
     public List<Object[]> findLast15MinutesFaults() {
-    String sql = "SELECT " +
-                 "r.dlStation, " +
-                 "r.dlName, " +
-                 "f.fltMsg, " +
-                 "f.fltInfo, " +
-                 "f.sysTime, " +
-                 "f.sysYear, " +
-                 "f.dlTime, " +
-                 "f.faultLevel, " +
-                 "f.faultType, " +
-                 "f.createdTime, " +
-                 "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
-                 "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
-                 "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                 "WHERE f.dlTime >= (((CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '15' MINUTE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
-                 "AND f.dlTime <= (((CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
-                 "ORDER BY f.dlTime DESC";
-        EntityManager em = getEntityManager();
+        EntityManager em = null;
         try {
+            em = getEntityManager();
+            
+            String sql = "SELECT " +
+                     "r.dlStation, " +
+                     "r.dlName, " +
+                     "f.fltMsg, " +
+                     "f.fltInfo, " +
+                     "f.sysTime, " +
+                     "f.sysYear, " +
+                     "f.dlTime, " +
+                     "f.faultLevel, " +
+                     "f.faultType, " +
+                     "f.createdTime, " +
+                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
+                     "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
+                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH') " +
+                     "AND f.createdTime >= CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '15' MINUTE " +
+                     "ORDER BY f.createdTime DESC";
+            
             Query query = em.createNativeQuery(sql);
             return query.getResultList();
         } finally {
@@ -322,7 +347,11 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> findLast15MinutesFaultsByDlTime() {
-        String sql = "SELECT " +
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            
+            String sql = "SELECT " +
                      "r.dlStation, " +
                      "r.dlName, " +
                      "f.fltMsg, " +
@@ -336,14 +365,48 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.dlTime >= (((CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '15' MINUTE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
-                     "AND f.dlTime <= (((CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
-                     "AND f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH', 'TEMPERATURE HIGH', 'Earth Leakage Appeared', 'Earth Leakage Disappeared') " +
+                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH') " +
+                     "AND f.dlTime >= ((EXTRACT(EPOCH FROM (CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '15' MINUTE)) - 1735689600) * 64) " +
                      "ORDER BY f.dlTime DESC";
-        
-        EntityManager em = getEntityManager();
-        try {
+            
             Query query = em.createNativeQuery(sql);
+            return query.getResultList();
+        } finally {
+            if (em != null && em.isOpen()) {
+                em.close();
+            }
+        }
+    }
+
+    @Override
+    public List<Object[]> findFaultsByDateRange(LocalDateTime fromDateTime, LocalDateTime toDateTime) {
+        EntityManager em = null;
+        try {
+            em = getEntityManager();
+            
+            String sql = "SELECT " +
+                    "r.dlStation, " +
+                    "r.dlName, " +
+                    "f.fltMsg, " +
+                    "f.fltInfo, " +
+                    "f.sysTime, " +
+                    "f.sysYear, " +
+                    "f.dlTime, " +
+                    "f.faultLevel, " +
+                    "f.faultType, " +
+                    "f.createdTime, " +
+                    "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                    "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
+                    "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
+                    "WHERE f.dlTime BETWEEN " +
+                    "(((CAST(:startTime AS DATE) - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
+                    "AND " +
+                    "(((CAST(:endTime AS DATE) - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
+                    "ORDER BY f.dlTime DESC";
+            
+            Query query = em.createNativeQuery(sql);
+            query.setParameter("startTime", fromDateTime);
+            query.setParameter("endTime", toDateTime);
             return query.getResultList();
         } finally {
             if (em != null && em.isOpen()) {

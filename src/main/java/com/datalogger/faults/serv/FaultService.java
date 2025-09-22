@@ -176,4 +176,16 @@ public class FaultService {
         
         return combinedFaults;
     }
+
+    public List<FaultDTO> getFaultsByDateRange(LocalDateTime fromDateTime, LocalDateTime toDateTime) {
+        ArrayList<FaultDTO> combinedFaults = new ArrayList<>();
+        
+        for (FaultRepository repository : getRepositories().values()) {
+            List<Object[]> results = repository.findFaultsByDateRange(fromDateTime, toDateTime);
+            List<FaultDTO> faults = mapToDTO(results);
+            combinedFaults.addAll(faults);
+        }
+        
+        return combinedFaults;
+    }
 }
