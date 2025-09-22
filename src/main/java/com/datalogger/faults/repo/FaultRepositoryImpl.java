@@ -155,7 +155,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE TRIM(f.faultType) IN ('Relay Room Door Opened', 'Relay Room Door Closed') " +
-                     "AND f.createdTime >= TRUNC(SYSDATE) AND f.createdTime < TRUNC(SYSDATE) + INTERVAL '1' DAY " +
+                     "AND f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) + INTERVAL '1' DAY " +
                      "ORDER BY f.createdTime DESC";
         
         EntityManager em = getEntityManager();
@@ -186,7 +186,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
                      "WHERE TRIM(f.faultType) IN ('Relay Room Door Opened', 'Relay Room Door Closed') " +
-                     "AND f.createdTime >= TRUNC(SYSDATE - INTERVAL '1' DAY) AND f.createdTime < TRUNC(SYSDATE) " +
+                     "AND f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '1' DAY) AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) " +
                      "ORDER BY f.createdTime DESC";
         
         EntityManager em = getEntityManager();
@@ -246,7 +246,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.createdTime >= TRUNC(SYSDATE) AND f.createdTime < TRUNC(SYSDATE) + INTERVAL '1' DAY " +
+                     "WHERE f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) + INTERVAL '1' DAY " +
                      "ORDER BY f.createdTime DESC";
         
         EntityManager em = getEntityManager();
@@ -276,7 +276,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.createdTime >= TRUNC(SYSDATE - INTERVAL '1' DAY) AND f.createdTime < TRUNC(SYSDATE) " +
+                     "WHERE f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '1' DAY) AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) " +
                      "ORDER BY f.createdTime DESC";
         
         EntityManager em = getEntityManager();
@@ -306,8 +306,8 @@ public class FaultRepositoryImpl implements FaultRepository {
                  "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
                  "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                  "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                 "WHERE f.dlTime >= (((SYSDATE - INTERVAL '15' MINUTE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
-                 "AND f.dlTime <= (((SYSDATE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
+                 "WHERE f.dlTime >= (((CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '15' MINUTE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
+                 "AND f.dlTime <= (((CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
                  "ORDER BY f.dlTime DESC";
         EntityManager em = getEntityManager();
         try {
@@ -327,16 +327,18 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "r.dlName, " +
                      "f.fltMsg, " +
                      "f.fltInfo, " +
-                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "f.sysTime, " +
                      "f.sysYear, " +
-                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP, " +
+                     "f.dlTime, " +
                      "f.faultLevel, " +
                      "f.faultType, " +
-                     "f.createdTime " +
+                     "f.createdTime, " +
+                     "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
+                     "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.dlTime >= (((SYSDATE - INTERVAL '240' MINUTE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
-                     "AND f.dlTime <= (((SYSDATE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
-                     "AND f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH', 'TEMPERATURE HIGH','Earth Leakage Appeared','Earth Leakage Disappeared') " +
+                     "WHERE f.dlTime >= (((CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '15' MINUTE - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
+                     "AND f.dlTime <= (((CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
+                     "AND f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH', 'TEMPERATURE HIGH', 'Earth Leakage Appeared', 'Earth Leakage Disappeared') " +
                      "ORDER BY f.dlTime DESC";
         
         EntityManager em = getEntityManager();
