@@ -51,10 +51,9 @@ public class FaultRepositoryImpl implements FaultRepository {
 
     @Override
     public List<Object[]> allFaults() {
-        EntityManager em = null;
+        EntityManager em = getEntityManager();
         try {
-            em = getEntityManager();
-            
+            em.getTransaction().begin();
             String sql = "SELECT " +
                      "r.dlStation, " +
                      "r.dlName, " +
@@ -73,9 +72,16 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "ORDER BY f.sysTime DESC";
             
             Query query = em.createNativeQuery(sql);
-            return query.getResultList();
+            List<Object[]> result = query.getResultList();
+            em.getTransaction().commit();
+            return result;
+        } catch (Exception e) {
+            if (em.getTransaction().isActive()) {
+                em.getTransaction().rollback();
+            }
+            throw e;
         } finally {
-            if (em != null && em.isOpen()) {
+            if (em.isOpen()) {
                 em.close();
             }
         }
