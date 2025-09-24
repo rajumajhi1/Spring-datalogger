@@ -68,7 +68,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH') " +
+                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH','TEMPERATURE LOW') " +
                      "ORDER BY f.sysTime DESC";
             
             Query query = em.createNativeQuery(sql);
@@ -271,7 +271,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH') " +
+                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH','TEMPERATURE LOW') " +
                      "AND f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) + INTERVAL '1' DAY " +
                      "ORDER BY f.createdTime DESC";
             
@@ -304,7 +304,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH') " +
+                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH','TEMPERATURE LOW') " +
                      "AND f.createdTime >= TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) - INTERVAL '1' DAY " +
                      "AND f.createdTime < TRUNC(CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE)) " +
                      "ORDER BY f.createdTime DESC";
@@ -338,7 +338,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH') " +
+                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH','TEMPERATURE LOW') " +
                      "AND f.createdTime >= CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '15' MINUTE " +
                      "ORDER BY f.createdTime DESC";
             
@@ -371,7 +371,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "DATE '1970-01-01' + (((f.sysTime / 64) + 1735689600) / 86400) AS SYS_TIMESTAMP, " +
                      "DATE '1970-01-01' + (((f.dlTime / 64) + 1735689600) / 86400) AS DL_TIMESTAMP " +
                      "FROM Fault f JOIN RhSetup r ON f.dlNo = r.dlNo " +
-                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH') " +
+                     "WHERE f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH','TEMPERATURE LOW') " +
                      "AND f.dlTime >= ((EXTRACT(EPOCH FROM (CAST(SYSTIMESTAMP AT TIME ZONE 'Asia/Kolkata' AS DATE) - INTERVAL '15' MINUTE)) - 1735689600) * 64) " +
                      "ORDER BY f.dlTime DESC";
             
@@ -408,6 +408,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                     "(((CAST(:startTime AS DATE) - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
                     "AND " +
                     "(((CAST(:endTime AS DATE) - DATE '1970-01-01') * 86400 * 1000 - 1735689600000) / 1000) * 64 " +
+                    "AND f.faultPseudoType NOT IN ('VOLTAGE LOW', 'VOLTAGE HIGH','TEMPERATURE HIGH','TEMPERATURE LOW') " +
                     "ORDER BY f.dlTime DESC";
             
             Query query = em.createNativeQuery(sql);
