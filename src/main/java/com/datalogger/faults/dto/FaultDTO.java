@@ -250,25 +250,25 @@ public class FaultDTO {
         int PRIME = 59;
         int result = 1;
         Integer $sysTime = this.getSysTime();
-        result = result * 59 + ($sysTime == null ? 43 : ((Object)$sysTime).hashCode());
+        result = result * PRIME + ($sysTime == null ? 43 : ((Object)$sysTime).hashCode());
         Integer $sysYear = this.getSysYear();
-        result = result * 59 + ($sysYear == null ? 43 : ((Object)$sysYear).hashCode());
+        result = result * PRIME + ($sysYear == null ? 43 : ((Object)$sysYear).hashCode());
         Integer $dlTime = this.getDlTime();
-        result = result * 59 + ($dlTime == null ? 43 : ((Object)$dlTime).hashCode());
+        result = result * PRIME + ($dlTime == null ? 43 : ((Object)$dlTime).hashCode());
         String $dlStation = this.getDlStation();
-        result = result * 59 + ($dlStation == null ? 43 : $dlStation.hashCode());
+        result = result * PRIME + ($dlStation == null ? 43 : $dlStation.hashCode());
         String $dlName = this.getDlName();
-        result = result * 59 + ($dlName == null ? 43 : $dlName.hashCode());
+        result = result * PRIME + ($dlName == null ? 43 : $dlName.hashCode());
         String $fltMsg = this.getFltMsg();
-        result = result * 59 + ($fltMsg == null ? 43 : $fltMsg.hashCode());
+        result = result * PRIME + ($fltMsg == null ? 43 : $fltMsg.hashCode());
         String $fltInfo = this.getFltInfo();
-        result = result * 59 + ($fltInfo == null ? 43 : $fltInfo.hashCode());
+        result = result * PRIME + ($fltInfo == null ? 43 : $fltInfo.hashCode());
         String $faultLevel = this.getFaultLevel();
-        result = result * 59 + ($faultLevel == null ? 43 : $faultLevel.hashCode());
+        result = result * PRIME + ($faultLevel == null ? 43 : $faultLevel.hashCode());
         String $faultType = this.getFaultType();
-        result = result * 59 + ($faultType == null ? 43 : $faultType.hashCode());
+        result = result * PRIME + ($faultType == null ? 43 : $faultType.hashCode());
         LocalDateTime $createdTime = this.getCreatedTime();
-        result = result * 59 + ($createdTime == null ? 43 : $createdTime.hashCode());
+        result = result * PRIME + ($createdTime == null ? 43 : $createdTime.hashCode());
         return result;
     }
 }

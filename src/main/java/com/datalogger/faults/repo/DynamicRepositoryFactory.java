@@ -20,6 +20,7 @@ public class DynamicRepositoryFactory {
     public Map<String, FaultRepository> faultRepositories() {
         Map<String, FaultRepository> repositories = new HashMap<>();
         
+        @SuppressWarnings("unchecked")
         Map<String, DataSource> dataSources = context.getBean("dataSources", Map.class);
         AutowireCapableBeanFactory beanFactory = context.getAutowireCapableBeanFactory();
         

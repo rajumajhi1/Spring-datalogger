@@ -24,6 +24,7 @@ public class FaultService {
     @Autowired
     private ApplicationContext context;
     
+    @SuppressWarnings("unchecked")
     private Map<String, FaultRepository> getRepositories() {
         return context.getBean("faultRepositories", Map.class);
     }

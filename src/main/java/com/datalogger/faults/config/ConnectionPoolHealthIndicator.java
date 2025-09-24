@@ -27,6 +27,7 @@ public class ConnectionPoolHealthIndicator implements HealthIndicator {
                 DataSource dataSource = entry.getValue();
                 
                 if (dataSource instanceof HikariDataSource) {
+                    @SuppressWarnings("resource")
                     HikariDataSource hikariDS = (HikariDataSource) dataSource;
                     HikariPoolMXBean poolBean = hikariDS.getHikariPoolMXBean();
                     

@@ -98,11 +98,11 @@ public class RhSetup {
         int PRIME = 59;
         int result = 1;
         Integer $dlNo = this.getDlNo();
-        result = result * 59 + ($dlNo == null ? 43 : ((Object)$dlNo).hashCode());
+        result = result * PRIME + ($dlNo == null ? 43 : ((Object)$dlNo).hashCode());
         String $dlname = this.getDlname();
-        result = result * 59 + ($dlname == null ? 43 : $dlname.hashCode());
+        result = result * PRIME + ($dlname == null ? 43 : $dlname.hashCode());
         String $dlStation = this.getDlStation();
-        result = result * 59 + ($dlStation == null ? 43 : $dlStation.hashCode());
+        result = result * PRIME + ($dlStation == null ? 43 : $dlStation.hashCode());
         return result;
     }
 }

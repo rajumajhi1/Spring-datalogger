@@ -28,6 +28,7 @@ public class FaultRepositoryImpl implements FaultRepository {
     
     private EntityManager getEntityManager() {
         try {
+            @SuppressWarnings("unchecked")
             Map<String, LocalContainerEntityManagerFactoryBean> factories = 
                 context.getBean("entityManagerFactories", Map.class);
             
@@ -72,6 +73,7 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "ORDER BY f.sysTime DESC";
             
             Query query = em.createNativeQuery(sql);
+            @SuppressWarnings("unchecked")
             List<Object[]> result = query.getResultList();
             em.getTransaction().commit();
             return result;
@@ -112,7 +114,9 @@ public class FaultRepositoryImpl implements FaultRepository {
             
             Query query = em.createNativeQuery(sql);
             query.setParameter("lastCreatedTime", lastCreatedTime);
-            return query.getResultList();
+            @SuppressWarnings("unchecked")
+            List<Object[]> result = query.getResultList();
+            return result;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -144,7 +148,9 @@ public class FaultRepositoryImpl implements FaultRepository {
             
             Query query = em.createNativeQuery(sql);
             query.setParameter("id", id);
-            return query.getResultList();
+            @SuppressWarnings("unchecked")
+            List<Object[]> result = query.getResultList();
+            return result;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -177,7 +183,9 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "ORDER BY f.createdTime DESC";
             
             Query query = em.createNativeQuery(sql);
-            return query.getResultList();
+            @SuppressWarnings("unchecked")
+            List<Object[]> result = query.getResultList();
+            return result;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -211,7 +219,9 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "ORDER BY f.createdTime DESC";
             
             Query query = em.createNativeQuery(sql);
-            return query.getResultList();
+            @SuppressWarnings("unchecked")
+            List<Object[]> result = query.getResultList();
+            return result;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -243,7 +253,9 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "ORDER BY f.createdTime DESC";
             
             Query query = em.createNativeQuery(sql);
-            return query.getResultList();
+            @SuppressWarnings("unchecked")
+            List<Object[]> result = query.getResultList();
+            return result;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -276,7 +288,9 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "ORDER BY f.createdTime DESC";
             
             Query query = em.createNativeQuery(sql);
-            return query.getResultList();
+            @SuppressWarnings("unchecked")
+            List<Object[]> result = query.getResultList();
+            return result;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -310,7 +324,9 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "ORDER BY f.createdTime DESC";
             
             Query query = em.createNativeQuery(sql);
-            return query.getResultList();
+            @SuppressWarnings("unchecked")
+            List<Object[]> result = query.getResultList();
+            return result;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -343,7 +359,9 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "ORDER BY f.createdTime DESC";
             
             Query query = em.createNativeQuery(sql);
-            return query.getResultList();
+            @SuppressWarnings("unchecked")
+            List<Object[]> result = query.getResultList();
+            return result;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -376,7 +394,9 @@ public class FaultRepositoryImpl implements FaultRepository {
                      "ORDER BY f.dlTime DESC";
             
             Query query = em.createNativeQuery(sql);
-            return query.getResultList();
+            @SuppressWarnings("unchecked")
+            List<Object[]> result = query.getResultList();
+            return result;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
@@ -414,7 +434,9 @@ public class FaultRepositoryImpl implements FaultRepository {
             Query query = em.createNativeQuery(sql);
             query.setParameter("startTime", fromDateTime);
             query.setParameter("endTime", toDateTime);
-            return query.getResultList();
+            @SuppressWarnings("unchecked")
+            List<Object[]> result = query.getResultList();
+            return result;
         } finally {
             if (em != null && em.isOpen()) {
                 em.close();
